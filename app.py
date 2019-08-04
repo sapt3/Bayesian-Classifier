@@ -5,28 +5,28 @@ import math
 
 
 def loadCsv(filename):
-    lines = csv.reader(open(filename, "rb"))
-    dataset = list(lines)
-    for i in range(len(dataset)):
-        dataset[i] = [float(x) for x in dataset[i]]
-    return dataset
+    lines = csv.reader(open(filename, "r"))
+    data_set = list(lines)
+    for i in range(len(data_set)):
+        data_set[i] = [float(x) for x in data_set[i]]
+    return data_set
 
 
-def splitDataset(dataset, splitRatio):
-    trainSize = int(len(dataset) * splitRatio)
+def split_data_set(data_set, splitRatio):
+    trainSize = int(len(data_set) * splitRatio)
     trainSet = []
-    copy = list(dataset)
+    copy = list(data_set)
     while len(trainSet) < trainSize:
         index = random.randrange(len(copy))
         trainSet.append(copy.pop(index))
     return [trainSet, copy]
 
 
-def separateByClass(dataset):
+def separateByClass(data_set):
     separated = {}
-    for i in range(len(dataset)):
-        vector = dataset[i]
-        if (vector[-1] not in separated):
+    for i in range(len(data_set)):
+        vector = data_set[i]
+        if vector[-1] not in separated:
             separated[vector[-1]] = []
         separated[vector[-1]].append(vector)
     return separated
@@ -99,10 +99,10 @@ def getAccuracy(testSet, predictions):
 
 
 def main():
-    filename = 'pima-indians-diabetes.data.csv'
+    filename = 'diabetes.csv'
     splitRatio = 0.67
     dataset = loadCsv(filename)
-    trainingSet, testSet = splitDataset(dataset, splitRatio)
+    trainingSet, testSet = split_data_set(dataset, splitRatio)
     print('Split {0} rows into train={1} and test={2} rows').format(len(dataset), len(trainingSet), len(testSet))
     # prepare model
     summaries = summarizeByClass(trainingSet)
